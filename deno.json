@@ -11,7 +11,7 @@
     "zod": "npm:/zod",
     "pdf-parse": "npm:/pdf-parse/lib/pdf-parse.js",
     "ignore": "npm:/ignore",
-    "cheerio": "npm:/cheerio",
+    "cheerio": "npm:/cheerio@1.0.0-rc.12",
     "vectordb": "npm:/vectordb",
     "@lancedb/lancedb": "npm:/@lancedb/lancedb",
     "@langchain/community/": "npm:/@langchain/community/",
