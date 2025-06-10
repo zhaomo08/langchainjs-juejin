@@ -2,7 +2,9 @@ import { TextLoader } from "langchain/document_loaders/fs/text";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import "dotenv/config";
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
-import { OpenAIEmbeddings } from "@langchain/openai";
+// import { OpenAIEmbeddings } from "@langchain/openai";
+import { OllamaEmbeddings } from "@langchain/ollama"; // ✅ 新路径！
+
 
 const run = async () => {
   const loader = new TextLoader("../data/kong.txt");
@@ -15,7 +17,9 @@ const run = async () => {
 
   const splitDocs = await splitter.splitDocuments(docs);
 
-  const embeddings = new OpenAIEmbeddings();
+  const embeddings = new OllamaEmbeddings({
+    model: "nomic-embed-text", // 或 "all-minilm"
+  });
   const vectorStore = await FaissStore.fromDocuments(splitDocs, embeddings);
 
   const directory = "../db/kongyiji";

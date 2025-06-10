@@ -97,9 +97,17 @@ export async function getRagChain(): Promise<Runnable> {
 
   const chatHistoryDir = path.join(__dirname, "../../chat_data");
 
+  // Create a map to store chat history instances by session ID
+  const chatHistoryMap = new Map();
+
   const ragChainWithHistory = new RunnableWithMessageHistory({
     runnable: ragChain,
-    getMessageHistory: (sessionId) => new JSONChatHistory({ sessionId, dir: chatHistoryDir }),
+    getMessageHistory: (sessionId) => {
+      if (!chatHistoryMap.has(sessionId)) {
+        chatHistoryMap.set(sessionId, new JSONChatHistory({ sessionId, dir: chatHistoryDir }));
+      }
+      return chatHistoryMap.get(sessionId);
+    },
     historyMessagesKey: "history",
     inputMessagesKey: "question",
   });

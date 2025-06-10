@@ -4,6 +4,7 @@ import "dotenv/config";
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import path from "path";
+import {OllamaEmbeddings} from "@langchain/ollama";
 
 const run = async () => {
   const baseDir = __dirname;
@@ -18,7 +19,10 @@ const run = async () => {
 
   const splitDocs = await splitter.splitDocuments(docs);
 
-  const embeddings = new OpenAIEmbeddings();
+  // const embeddings = new OpenAIEmbeddings();
+   const embeddings = new OllamaEmbeddings({
+    model: "nomic-embed-text", // 或 "all-minilm"
+  });
   const vectorStore = await FaissStore.fromDocuments(splitDocs, embeddings);
 
   await vectorStore.save(path.join(baseDir, "../../db/qiu"));

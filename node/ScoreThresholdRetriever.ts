@@ -1,13 +1,17 @@
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
-import { OpenAIEmbeddings } from "@langchain/openai";
+// import { OpenAIEmbeddings } from "@langchain/openai";
 import "dotenv/config";
 import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
+import {OllamaEmbeddings} from "@langchain/ollama";
 
 process.env.LANGCHAIN_VERBOSE = "true";
 
 async function run() {
   const directory = "../db/kongyiji";
-  const embeddings = new OpenAIEmbeddings();
+  // const embeddings = new OpenAIEmbeddings();
+   const embeddings = new OllamaEmbeddings({
+    model: "nomic-embed-text", // 或 "all-minilm"
+  });
   const vectorstore = await FaissStore.load(directory, embeddings);
 
   const retriever = ScoreThresholdRetriever.fromVectorStore(vectorstore, {
